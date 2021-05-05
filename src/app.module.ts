@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { MessageModule } from './message/message.module';
+import { MessageModule } from './model/message/message.module';
 
 @Module({
   imports: [MessageModule],

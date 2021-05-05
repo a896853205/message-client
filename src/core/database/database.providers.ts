@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Message } from '../message/message.entity';
+import { Message } from '../../model/message/message.entity';
 
 export const databaseProviders = [
   {
