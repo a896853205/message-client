@@ -7,4 +7,7 @@ export class MessageService {
     @Inject('MESSAGE_REPOSITORY')
     private messageRepository: typeof Message,
   ) {}
+  async findAll(): Promise<Message[]> {
+    return this.messageRepository.findAll<Message>();
+  }
 }
