@@ -6,6 +6,7 @@ export class MessageController {
   findAll(): string {
     return 'all message';
   }
+  
   @Get(':key')
   findOne(@Param('key') key: number): string {
     return 'response message';
