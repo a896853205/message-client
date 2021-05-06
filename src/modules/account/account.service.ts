@@ -16,6 +16,12 @@ export class AccountService {
     });
   }
 
+  async findOneById(id: number): Promise<Account | null> {
+    return await this.accountRepository.findOne<Account | null>({
+      where: { id },
+    });
+  }
+
   async create(
     login: string,
     name: string,

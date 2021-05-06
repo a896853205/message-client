@@ -1,7 +1,6 @@
 import { Strategy } from 'passport-github2';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 
 import axios from 'axios';
 
@@ -13,12 +12,11 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   constructor(
     private accountService: AccountService,
     private authService: AuthService,
-    private jwtService: JwtService,
   ) {
     super({
       clientID: process.env['GITHUB_CLIENT_ID'],
       clientSecret: process.env['GITHUB_CLIENT_SECRET'],
-      callbackURL: 'http://localhost:3000/oauth',
+      callbackURL: 'http://localhost:7002/oauth',
     });
   }
 
