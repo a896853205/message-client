@@ -7,7 +7,6 @@ import { AppService } from './app.service';
 import { MessageModule } from './modules/message/message.module';
 
 import { AuthModule } from './modules/auth/auth.module';
-import { AuthService } from './modules/auth/auth.service';
 
 import { AccountModule } from './modules/account/account.module';
 
