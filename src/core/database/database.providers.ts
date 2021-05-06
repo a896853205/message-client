@@ -18,14 +18,6 @@ export const databaseProviders = [
         default:
           config = databaseConfig.development;
       }
-      /* const sequelize = new Sequelize({
-        dialect: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: 'root',
-        password: '130613',
-        database: 'message-client-database',
-      }); */
       const sequelize = new Sequelize(config);
       sequelize.addModels([Message]);
       await sequelize.sync();
