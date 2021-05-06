@@ -13,7 +13,9 @@ import { AccountModule } from './modules/account/account.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     DatabaseModule,
     MessageModule,
     AuthModule,

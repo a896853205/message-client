@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { v4 } from 'uuid';
-import { plainToClass } from 'class-transformer';
 
 import { Account, SafeAccount } from './account.entity';
 
