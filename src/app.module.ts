@@ -19,6 +19,6 @@ import { AccountModule } from './modules/account/account.module';
     AccountModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService],
+  providers: [AppService],
 })
 export class AppModule {}

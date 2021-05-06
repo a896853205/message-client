@@ -6,6 +6,6 @@ export class AuthController {
   @UseGuards(AuthGuard('github'))
   @Get()
   async login(@Request() req) {
-    return 'url: home';
+    return req.user;
   }
 }
