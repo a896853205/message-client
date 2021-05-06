@@ -28,6 +28,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.0.0",
     "axios": "^0.21.1",
+    "class-transformer": "^0.4.0",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-github2": "^0.1.12",
