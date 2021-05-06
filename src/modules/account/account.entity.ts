@@ -1,4 +1,5 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Expose } from 'class-transformer';
 
 @Table
 export class Account extends Model {
@@ -54,4 +55,18 @@ export class Account extends Model {
     allowNull: true,
   })
   accessToken: number;
+}
+
+export class SafeAccount {
+  id: number;
+  uuid: string;
+  name: string;
+  avatarUrl: string;
+
+  constructor(account: Account) {
+    this.id = account.id;
+    this.uuid = account.uuid;
+    this.name = account.name;
+    this.avatarUrl = account.avatarUrl;
+  }
 }

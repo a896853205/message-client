@@ -16,7 +16,7 @@ export class JWTStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate({ id }) {
     // check if user in the token actually exist
-    const account = await this.accountService.findOneById(id);
+    const account = await this.accountService.findSafeOneById(id);
 
     if (!account) {
       throw new UnauthorizedException(

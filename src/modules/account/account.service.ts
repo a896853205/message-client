@@ -1,7 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { v4 } from 'uuid';
+import { plainToClass } from 'class-transformer';
 
-import { Account } from './account.entity';
+import { Account, SafeAccount } from './account.entity';
 
 @Injectable()
 export class AccountService {
@@ -20,6 +21,18 @@ export class AccountService {
     return await this.accountRepository.findOne<Account | null>({
       where: { id },
     });
+  }
+
+  /**
+   * 返回不带有敏感信息的account
+   * @param id 账号id
+   */
+  async findSafeOneById(id: number): Promise<SafeAccount | null> {
+    const account = await this.accountRepository.findOne<Account | null>({
+      where: { id },
+    });
+
+    return account ? new SafeAccount(account) : null;
   }
 
   async create(
