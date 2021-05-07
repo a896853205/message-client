@@ -26,10 +26,10 @@ export class Message extends Model {
   })
   code: string;
 
+  @Comment('information/success/alert/error')
   @Column({
     type: DataType.TEXT,
     allowNull: false,
   })
-  @Comment('information/success/alert/error')
   type: string;
 }
