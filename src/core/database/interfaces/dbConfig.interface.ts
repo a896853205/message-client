@@ -1,7 +1,7 @@
 export interface DatabaseConfigAttributes {
-  dialect: string;
+  Dialect: string;
   host: string;
-  port: number | string;
+  port: number;
   username: string;
   password: string;
   database: string;

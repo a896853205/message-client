@@ -16,10 +16,10 @@ import { AccountModule } from './modules/account/account.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    DatabaseModule,
     MessageModule,
     AuthModule,
     AccountModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

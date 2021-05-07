@@ -4,8 +4,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AccountService } from '../account/account.service';
 
-console.log('TOKEN_KEY', process.env['TOKEN_KEY']);
-
 @Injectable()
 export class JWTStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private accountService: AccountService) {
