@@ -1,29 +1,41 @@
-import { MaxLength, IsNumberString, IsEnum, IsNumber } from 'class-validator';
-enum Type {
-  infromation = 'information',
-  success = 'success',
-  alter = 'alter',
-  error = 'error',
-}
+import { MaxLength, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ApiProperty, PartialType, OmitType, PickType } from '@nestjs/swagger';
 export class MessageDto {
+  @ApiProperty()
   @IsNumber()
-  id?: number;
-  
+  @Type(() => Number)
+  id: number;
+
+  @ApiProperty()
+  @MaxLength(36, {
+    message: 'uuid is to long',
+  })
+  uuid: string;
+
+  @ApiProperty()
   @MaxLength(255, {
     message: 'message is too long',
   })
-  message?: string;
+  message: string;
 
+  @ApiProperty()
   @MaxLength(6, {
     message: 'key is too long',
   })
-  code?: string;
+  code: string;
 
-  @IsEnum(Type, {
-    message: 'type must be one of information or success or alter or error',
-  })
-  type?: string;
+  @ApiProperty()
+  type: string;
 
-  @IsNumberString()
-  page?: number;
+  @ApiProperty()
+  @IsNumber()
+  @Type(() => Number)
+  page: number;
 }
+export class CreateMessageDto extends OmitType(MessageDto, ['page'] as const) {}
+export class UpdateMessageDto extends PickType(MessageDto, [
+  'id',
+  'message',
+] as const) {}
+export class SearchMessageDto extends PartialType(MessageDto) {}

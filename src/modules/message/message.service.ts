@@ -9,9 +9,6 @@ export class MessageService {
     @Inject('MESSAGE_REPOSITORY')
     private messageRepository: typeof Message,
   ) {}
-  async findAll() {
-    return this.messageRepository.findAll<Message | null>();
-  }
 
   async findAllByCodeAndMessageAndType(
     code: string,
@@ -19,23 +16,30 @@ export class MessageService {
     type: string,
     page: number,
   ) {
-    const test = '';
-    return this.messageRepository.findAll<Message | null>({
-      where: {
-        code: {
-          [Op.like]: `%${code}%`,
+    const results = await this.messageRepository.findAndCountAll<Message | null>(
+      {
+        where: {
+          code: {
+            [Op.like]: `%${code}%`,
+          },
+          message: {
+            [Op.like]: `%${message}%`,
+          },
+          type: {
+            [Op.like]: `%${type}%`,
+          },
         },
-        message: {
-          [Op.like]: `%${message}%`,
-        },
-        type: {
-          [Op.like]: `%${type}%`,
-        },
+        offset: (page - 1) * 5,
+        limit: 5, // 假设一页展示5项
       },
-    });
+    );
+    return {
+      count: results.count,
+      messages: results.rows,
+    };
   }
   async alterById(message: string, id: number) {
-    return this.messageRepository.update<Message | null>(
+    return await this.messageRepository.update<Message | null>(
       { message },
       {
         where: { id },
@@ -43,7 +47,7 @@ export class MessageService {
     );
   }
   async deleteById(id: number) {
-    return this.messageRepository.destroy<Message | null>({
+    return await this.messageRepository.destroy<Message | null>({
       where: {
         id,
       },
