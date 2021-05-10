@@ -1,7 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Message } from './message.entity';
-const Sequelize = require('Sequelize');
-const Op = Sequelize.Op;
+import { Op } from 'Sequelize';
+
+import { PAGE } from '../../core/constants/index';
 
 @Injectable()
 export class MessageService {
@@ -16,6 +17,7 @@ export class MessageService {
     type: string,
     page: number,
   ) {
+    console.log('service', page);
     const results = await this.messageRepository.findAndCountAll<Message | null>(
       {
         where: {
@@ -29,8 +31,8 @@ export class MessageService {
             [Op.like]: `%${type}%`,
           },
         },
-        offset: (page - 1) * 5,
-        limit: 5, // 假设一页展示5项
+        offset: Number((page - 1) * PAGE),
+        limit: PAGE, // 假设一页展示5项
       },
     );
     return {

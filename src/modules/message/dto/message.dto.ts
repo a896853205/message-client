@@ -1,10 +1,8 @@
-import { MaxLength, IsNumber } from 'class-validator';
-import { Type } from 'class-transformer';
+import { MaxLength, IsInt } from 'class-validator';
 import { ApiProperty, PartialType, OmitType, PickType } from '@nestjs/swagger';
 export class MessageDto {
   @ApiProperty()
-  @IsNumber()
-  @Type(() => Number)
+  @IsInt()
   id: number;
 
   @ApiProperty()
@@ -29,9 +27,8 @@ export class MessageDto {
   type: string;
 
   @ApiProperty()
-  @IsNumber()
-  @Type(() => Number)
-  page: number;
+  @IsInt()
+  readonly page: number = 1;
 }
 export class CreateMessageDto extends OmitType(MessageDto, ['page'] as const) {}
 export class UpdateMessageDto extends PickType(MessageDto, [
