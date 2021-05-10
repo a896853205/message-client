@@ -35,12 +35,12 @@ export class MessageController {
    * @param request
    */
   @Put()
-  async alterById(@Query('id') id: number, @Query('message') message: string) {
+  async alterById(
+    @Query('id') id: number,
+    @Query('message') message: string,
+  ) {
     console.log('alter message by id');
-    const updateResult = await this.messageService.alterById(
-      String(message),
-      id,
-    );
+    const updateResult = await this.messageService.alterById(message, id);
     console.log('updateResult[0]', updateResult[0]);
     if (updateResult[0] < 1) {
       return '修改失败';

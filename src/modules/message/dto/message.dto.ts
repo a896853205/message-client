@@ -1,4 +1,4 @@
-import { MaxLength, IsNotEmpty, IsNumberString, IsEnum } from 'class-validator';
+import { MaxLength, IsNumberString, IsEnum, IsNumber } from 'class-validator';
 enum Type {
   infromation = 'information',
   success = 'success',
@@ -6,6 +6,9 @@ enum Type {
   error = 'error',
 }
 export class MessageDto {
+  @IsNumber()
+  id?: number;
+  
   @MaxLength(255, {
     message: 'message is too long',
   })
@@ -21,7 +24,6 @@ export class MessageDto {
   })
   type?: string;
 
-  // @IsNumber()
   @IsNumberString()
   page?: number;
 }
