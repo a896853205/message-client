@@ -21,7 +21,7 @@ export class MessageDto {
 
   @ApiProperty()
   @MaxLength(6, {
-    message: 'key is too long',
+    message: 'code is too long',
   })
   code: string;
 
@@ -38,4 +38,5 @@ export class UpdateMessageDto extends PickType(MessageDto, [
   'id',
   'message',
 ] as const) {}
+export class DeleteMessageDto extends PickType(MessageDto, ['id'] as const) {}
 export class SearchMessageDto extends PartialType(MessageDto) {}
