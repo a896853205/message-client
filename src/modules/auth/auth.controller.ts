@@ -8,7 +8,7 @@ export class AuthController {
   @Redirect()
   async login(@Request() req) {
     return {
-      url: `http://localhost:3000/oauth?accessToken=${req.user.accessToken}`,
+      url: `http://localhost:3000/oauth/${req.user.accessToken}`,
     };
   }
 }
