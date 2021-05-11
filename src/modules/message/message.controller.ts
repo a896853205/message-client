@@ -1,26 +1,35 @@
-import { Controller, Get, Query, Put, Delete, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Put,
+  Delete,
+  Res,
+  ParseIntPipe,
+  DefaultValuePipe,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { MessageService } from './message.service';
 import {
   SearchMessageDto,
   UpdateMessageDto,
   DeleteMessageDto,
 } from './dto/message.dto';
-import { ParseIntPipe } from '../../core/pipes/parseIntPipe';
 import { Response } from 'express';
 @Controller('messages')
 export class MessageController {
   constructor(private messageService: MessageService) {}
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   async findAllByCodeAndMessageAndType(
     @Query('code') code: SearchMessageDto['code'],
     @Query('message') message: SearchMessageDto['message'],
-    @Query('page', new ParseIntPipe()) page: SearchMessageDto['page'],
+    @Query('page', new DefaultValuePipe(1), new ParseIntPipe())
+    page: SearchMessageDto['page'],
     @Query('type') type: SearchMessageDto['type'],
   ) {
-    if (page === 0) {
-      page = 1;
-    }
     const result = await this.messageService.findAllByCodeAndMessageAndType(
       code,
       message,
@@ -35,22 +44,26 @@ export class MessageController {
    * @param request
    */
   @Put()
+  @UseGuards(AuthGuard('jwt'))
   async alterById(
     @Query('message') message: UpdateMessageDto['message'],
-    @Query('id', new ParseIntPipe()) id: UpdateMessageDto['id'],
+    @Query('id', new ParseIntPipe())
+    id: UpdateMessageDto['id'],
     @Res() res: Response,
   ) {
     const updateResult = await this.messageService.alterById(message, id);
     if (updateResult[0] < 1) {
-      return '修改失败';
+      res.status(400).send();
     } else {
       res.status(201).send();
     }
   }
 
   @Delete()
+  @UseGuards(AuthGuard('jwt'))
   async deleteById(
-    @Query('id', new ParseIntPipe()) id: DeleteMessageDto['id'],
+    @Query('id', new ParseIntPipe())
+    id: DeleteMessageDto['id'],
     @Res() res: Response,
   ) {
     const deleteResult = await this.messageService.deleteById(id);
@@ -58,7 +71,7 @@ export class MessageController {
     if (deleteResult > 0) {
       res.status(204).send();
     } else {
-      return '删除失败';
+      res.status(400).send();
     }
   }
 }

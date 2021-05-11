@@ -17,7 +17,6 @@ export class MessageService {
     type: string,
     page: number,
   ) {
-    console.log('service', page);
     const results = await this.messageRepository.findAndCountAll<Message | null>(
       {
         where: {
