@@ -24,19 +24,19 @@ export class MessageController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   async findAllByCodeAndMessageAndType(
-    @Query('code') code: SearchMessageDto['code'],
-    @Query('message') message: SearchMessageDto['message'],
+    @Query('code', new DefaultValuePipe('')) code: SearchMessageDto['code'],
+    @Query('message', new DefaultValuePipe(''))
+    message: SearchMessageDto['message'],
     @Query('page', new DefaultValuePipe(1), new ParseIntPipe())
     page: SearchMessageDto['page'],
-    @Query('type') type: SearchMessageDto['type'],
+    @Query('type', new DefaultValuePipe('')) type: SearchMessageDto['type'],
   ) {
-    const result = await this.messageService.findAllByCodeAndMessageAndType(
+    return await this.messageService.findAllByCodeAndMessageAndType(
       code,
       message,
       type,
       page,
     );
-    return result;
   }
 
   /**

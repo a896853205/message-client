@@ -1,24 +1,30 @@
-import { MaxLength, IsInt } from 'class-validator';
+import { MaxLength, IsInt, IsIn, IsString } from 'class-validator';
 import { PartialType, OmitType, PickType } from '@nestjs/swagger';
+
 export class MessageDto {
   @IsInt()
   id: number;
 
+  @IsString()
   @MaxLength(36, {
     message: 'uuid is to long',
   })
   uuid: string;
 
+  @IsString()
   @MaxLength(255, {
     message: 'message is too long',
   })
   message: string;
 
+  @IsString()
   @MaxLength(6, {
     message: 'code is too long',
   })
   code: string;
 
+  @IsString()
+  @IsIn(['success', 'information', 'error', 'alter', 'unknown', ''])
   type: string;
 
   @IsInt()
