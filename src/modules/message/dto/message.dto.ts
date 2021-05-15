@@ -30,7 +30,11 @@ export class MessageDto {
   @IsInt()
   page: number;
 }
-export class CreateMessageDto extends OmitType(MessageDto, ['page'] as const) {}
+export class CreateMessageDto extends OmitType(MessageDto, [
+  'page',
+  'id',
+  'uuid',
+] as const) {}
 export class UpdateMessageDto extends PickType(MessageDto, [
   'id',
   'message',

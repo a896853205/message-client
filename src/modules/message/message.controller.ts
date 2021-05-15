@@ -15,6 +15,7 @@ import {
   SearchMessageDto,
   UpdateMessageDto,
   DeleteMessageDto,
+  CreateMessageDto,
 } from './dto/message.dto';
 import { Response } from 'express';
 @Controller('messages')
@@ -69,6 +70,40 @@ export class MessageController {
     const deleteResult = await this.messageService.deleteById(id);
 
     if (deleteResult > 0) {
+      res.status(204).send();
+    } else {
+      res.status(400).send();
+    }
+  }
+
+  @Get('recommend')
+  @UseGuards(AuthGuard('jwt'))
+  async findRecommendMessages(
+    @Query('message', new DefaultValuePipe(''))
+    message: SearchMessageDto['message'],
+  ) {
+    const results = await this.messageService.findRecommendMessages(message);
+    console.log(results);
+    return results;
+  }
+  @Get('newCode')
+  @UseGuards(AuthGuard('jwt'))
+  async newCode(
+    @Query('type', new DefaultValuePipe(''))
+    type: SearchMessageDto['type'],
+  ) {
+    return this.messageService.newCode(type);
+  }
+  @Put('create')
+  @UseGuards(AuthGuard('jwt'))
+  async create(
+    @Query('message') message: CreateMessageDto['message'],
+    @Query('type') type: CreateMessageDto['type'],
+    @Query('code') code: CreateMessageDto['code'],
+    @Res() res: Response,
+  ) {
+    const createResult = await this.messageService.create(message, type, code);
+    if (createResult) {
       res.status(204).send();
     } else {
       res.status(400).send();

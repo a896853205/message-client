@@ -1,5 +1,4 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
-import { Expose } from 'class-transformer';
 
 @Table
 export class Account extends Model {

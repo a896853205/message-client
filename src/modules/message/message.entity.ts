@@ -5,6 +5,7 @@ export class Message extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
   })
   id: number;
 
