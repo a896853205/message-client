@@ -95,7 +95,6 @@ export class MessageController {
   ) {
     try {
       const code = await this.messageService.newCode(type);
-      console.log('controller生成的code：', code);
       res.send(code);
     } catch (errorInfo) {
       res.status(400).send();

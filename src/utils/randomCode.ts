@@ -77,7 +77,6 @@ export const randomNotInArrayAndSameLength = (
   resString: string,
 ): string => {
   let allCode = notSameArray;
-  console.log('获取已经初始化第一位的code：', resString);
   for (let idx = 0; idx < codeLength; idx++) {
     const GBPMap = groupByPlace(allCode, idx);
     if (idx === 0) {

@@ -116,7 +116,6 @@ export class MessageService {
     for (let i = 0; i < results.count; i++) {
       existedCode[i] = results.rows[i].code;
     }
-    console.log('existedCode', existedCode);
     return existedCode;
   }
   async newCode(type: string): Promise<string> {
