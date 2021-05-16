@@ -81,18 +81,25 @@ export class MessageController {
   async findRecommendMessages(
     @Query('message', new DefaultValuePipe(''))
     message: SearchMessageDto['message'],
+    @Res() res: Response,
   ) {
     const results = await this.messageService.findRecommendMessages(message);
-    console.log(results);
-    return results;
+    res.send(results);
   }
   @Get('newCode')
   @UseGuards(AuthGuard('jwt'))
   async newCode(
     @Query('type', new DefaultValuePipe(''))
     type: SearchMessageDto['type'],
+    @Res() res: Response,
   ) {
-    return this.messageService.newCode(type);
+    try {
+      const code = await this.messageService.newCode(type);
+      console.log('controller生成的code：', code);
+      res.send(code);
+    } catch (errorInfo) {
+      res.status(400).send();
+    }
   }
   @Put('create')
   @UseGuards(AuthGuard('jwt'))
@@ -103,6 +110,9 @@ export class MessageController {
     @Res() res: Response,
   ) {
     const createResult = await this.messageService.create(message, type, code);
+    if (createResult === 0) {
+      res.status(400).send('code已经存在，请重新生成！');
+    }
     if (createResult) {
       res.status(204).send();
     } else {
