@@ -113,6 +113,7 @@ export class MessageController {
 
       res.status(204).send();
     } catch (errorInfo) {
+      console.error(errorInfo);
       res.status(400).send('code已经存在，请重新生成！');
     }
   }

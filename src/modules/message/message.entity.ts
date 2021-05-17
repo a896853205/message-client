@@ -27,7 +27,7 @@ export class Message extends Model {
   })
   code: string;
 
-  @Comment('information/success/alert/error')
+  @Comment('information/success/alert/error/unknow')
   @Column({
     type: DataType.TEXT,
     allowNull: false,
