@@ -71,24 +71,17 @@ const getRandomString = (len: number, completeWorks: string = '0123456789') => {
   return res;
 };
 
-export const randomNotInArrayAndSameLength = (
+const randomNotInArrayAndSameLength = (
   notSameArray: string[],
-  codeLength: number = 6,
-  resString: string,
+  codeLength = 6,
+  startIdx: number,
 ): string => {
+  let resString = '';
   let allCode = notSameArray;
-  for (let idx = 0; idx < codeLength; idx++) {
+
+  for (let idx = startIdx; idx < codeLength; idx++) {
     const GBPMap = groupByPlace(allCode, idx);
-    if (idx === 0) {
-      // 首位确定值判断
-      const firstIndexGBPArray = GBPMap.get(resString);
-      if (!firstIndexGBPArray) {
-        resString = resString + getRandomString(codeLength - idx - 1);
-        return resString;
-      } else {
-        continue;
-      }
-    }
+
     const canRandomArr = getCanRandomArrayFromGBPMap(GBPMap, idx, codeLength);
 
     if (canRandomArr.length === 0) throw new Error('全满了，无法继续随机');
@@ -110,4 +103,8 @@ export const randomNotInArrayAndSameLength = (
   }
 
   return resString;
+};
+
+export const planOutRandom = (notSameArray: string[], codeLength = 6) => {
+  return randomNotInArrayAndSameLength(notSameArray, codeLength, 1);
 };

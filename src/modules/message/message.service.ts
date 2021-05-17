@@ -44,6 +44,7 @@ export class MessageService {
       messages: results.rows,
     };
   }
+
   async alterById(message: string, id: number): Promise<[number, Message[]]> {
     return await this.messageRepository.update<Message | null>(
       { message },
@@ -52,6 +53,7 @@ export class MessageService {
       },
     );
   }
+
   async deleteById(id: number): Promise<number> {
     return await this.messageRepository.destroy<Message | null>({
       where: {
@@ -59,6 +61,7 @@ export class MessageService {
       },
     });
   }
+
   async findRecommendMessages(
     message: string,
   ): Promise<{ count: number; recommend: string[] }> {
@@ -81,6 +84,7 @@ export class MessageService {
       recommend,
     };
   }
+
   async findByCode(code: string): Promise<number> {
     const results = await this.messageRepository.findAndCountAll<Message | null>(
       {
@@ -91,6 +95,7 @@ export class MessageService {
     );
     return results.count;
   }
+
   async create(
     message: string,
     type: string,
@@ -108,6 +113,7 @@ export class MessageService {
       });
     }
   }
+  
   async allCode(): Promise<string[]> {
     const results = await this.messageRepository.findAndCountAll({
       attributes: ['code'],
