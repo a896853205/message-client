@@ -109,16 +109,9 @@ export class MessageController {
     @Res() res: Response,
   ) {
     try {
-      const createResult = await this.messageService.create(
-        message,
-        type,
-        code,
-      );
-      if (createResult) {
-        res.status(204).send();
-      } else {
-        res.status(400).send();
-      }
+      await this.messageService.create(message, type, code);
+
+      res.status(204).send();
     } catch (errorInfo) {
       res.status(400).send('code已经存在，请重新生成！');
     }
