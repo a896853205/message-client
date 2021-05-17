@@ -1,3 +1,4 @@
+const COMPLETE_WORKS = '0123456789';
 const groupByPlace = (
   allCode: string[],
   placeNumber: number,
@@ -23,7 +24,7 @@ const getCanRandomArrayFromGBPMap = (
   GBPMap: Map<string, string[]>,
   placeNumber: number,
   codeLength: number,
-  completeWorks: string = '0123456789',
+  completeWorks: string = COMPLETE_WORKS,
 ): string[] => {
   const canRandomArray: string[] = [];
   const completeWorkArr = completeWorks.split('');
@@ -57,7 +58,10 @@ const getRandomZeroToInt = (max: number) => {
   return Math.floor(Math.random() * max);
 };
 
-const getRandomString = (len: number, completeWorks: string = '0123456789') => {
+const getRandomString = (
+  len: number,
+  completeWorks: string = COMPLETE_WORKS,
+) => {
   if (len === 0) return '';
 
   const completeWorksArr = completeWorks.split('');
@@ -71,7 +75,7 @@ const getRandomString = (len: number, completeWorks: string = '0123456789') => {
   return res;
 };
 
-const randomNotInArrayAndSameLength = (
+export const randomNotInArrayAndSameLength = (
   notSameArray: string[],
   codeLength = 6,
   startIdx: number,

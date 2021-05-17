@@ -108,14 +108,19 @@ export class MessageController {
     @Query('code') code: CreateMessageDto['code'],
     @Res() res: Response,
   ) {
-    const createResult = await this.messageService.create(message, type, code);
-    if (createResult === 0) {
+    try {
+      const createResult = await this.messageService.create(
+        message,
+        type,
+        code,
+      );
+      if (createResult) {
+        res.status(204).send();
+      } else {
+        res.status(400).send();
+      }
+    } catch (errorInfo) {
       res.status(400).send('code已经存在，请重新生成！');
-    }
-    if (createResult) {
-      res.status(204).send();
-    } else {
-      res.status(400).send();
     }
   }
 }

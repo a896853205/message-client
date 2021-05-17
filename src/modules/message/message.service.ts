@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { Op } from 'Sequelize';
 
 import { PAGE } from '../../core/constants/index';
-import { randomNotInArrayAndSameLength } from '../../utils/randomCode';
+import { planOutRandom } from '../../utils/randomCode';
 
 @Injectable()
 export class MessageService {
@@ -102,8 +102,9 @@ export class MessageService {
     code: string,
   ): Promise<Message | number> {
     const results = await this.findByCode(code);
+
     if (results > 0) {
-      return 0;
+      throw new Error('already exist');
     } else {
       return await this.messageRepository.create({
         message,
@@ -113,38 +114,35 @@ export class MessageService {
       });
     }
   }
-  
-  async allCode(): Promise<string[]> {
+
+  async allCode(typeCode: string): Promise<string[]> {
     const results = await this.messageRepository.findAndCountAll({
       attributes: ['code'],
+      where: {
+        code: {
+          [Op.like]: `${typeCode}%`,
+        },
+      },
     });
     let existedCode: string[] = [];
+
     for (let i = 0; i < results.count; i++) {
       existedCode[i] = results.rows[i].code;
     }
     return existedCode;
   }
   async newCode(type: string): Promise<string> {
-    const existedCode = await this.allCode();
-    let code: string = '';
-    switch (type) {
-      case 'male':
-        code = '1';
-        break;
-      case 'success':
-        code = '2';
-        break;
-      case 'alter':
-        code = '3';
-        break;
-      case 'error':
-        code = '4';
-        break;
-      case 'unknow':
-        code = '5';
-        break;
-    }
-    const newCode = randomNotInArrayAndSameLength(existedCode, 6, code);
+    const typeObject = {
+      information: '1',
+      success: '2',
+      alter: '3',
+      error: '4',
+      unknow: '5',
+    };
+    const typeCode = typeObject[type] ?? '0';
+    const existedCode = await this.allCode(typeCode);
+    const remainCode = planOutRandom(existedCode, 6);
+    const newCode = typeCode + remainCode;
     return newCode;
   }
 }
