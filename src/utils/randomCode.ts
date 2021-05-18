@@ -1,11 +1,13 @@
+// 随机可能的全集
 const COMPLETE_WORKS = '0123456789';
+
 const groupByPlace = (
   allCode: string[],
   placeNumber: number,
 ): Map<string, string[]> => {
   const resMap = new Map<string, string[]>();
 
-  for (let code of allCode) {
+  for (const code of allCode) {
     const place = code.charAt(placeNumber);
 
     const groupArr = resMap.get(place);
@@ -34,7 +36,7 @@ const getCanRandomArrayFromGBPMap = (
     codeLength - placeNumber - 1,
   );
 
-  for (let completeWork of completeWorkArr) {
+  for (const completeWork of completeWorkArr) {
     const GBPArr = GBPMap.get(completeWork);
 
     if (!GBPArr) {

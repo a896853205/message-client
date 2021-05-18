@@ -92,27 +92,25 @@ export class MessageService {
     return results.count;
   }
 
-  async create(
-    message: string,
-    type: string,
-    code: string,
-  ): Promise<Message | number> {
+  async create(message: string, type: string, code: string): Promise<Message> {
     const results = await this.findByCode(code);
 
     if (results > 0) {
       throw new Error('already exist');
-    } else {
-      return await this.messageRepository.create({
-        message,
-        type,
-        code,
-        uuid: v4(),
-      });
     }
+
+    return await this.messageRepository.create({
+      message,
+      type,
+      code,
+      uuid: v4(),
+    });
   }
 
-  async allCode(typeCode: string): Promise<string[]> {
-    const results = await this.messageRepository.findAndCountAll({
+  async findAllCode(typeCode: string): Promise<string[]> {
+    const existedCode: string[] = [];
+
+    const results = await this.messageRepository.findAll({
       attributes: ['code'],
       where: {
         code: {
@@ -121,13 +119,14 @@ export class MessageService {
       },
       raw: true,
     });
-    let existedCode: string[] = [];
 
-    for (let i = 0; i < results.count; i++) {
-      existedCode[i] = results.rows[i].code;
+    for (const resultItem of results) {
+      existedCode.push(resultItem.code);
     }
+
     return existedCode;
   }
+
   async newCode(type: string): Promise<string> {
     const typeObject = {
       information: '1',
@@ -136,10 +135,12 @@ export class MessageService {
       error: '4',
       unknow: '5',
     };
-    const typeCode = typeObject[type] ?? '0';
-    const existedCode = await this.allCode(typeCode);
+
+    const typeCode = typeObject[type] ?? '5';
+
+    const existedCode = await this.findAllCode(typeCode);
     const remainCode = planOutRandom(existedCode, 6);
-    const newCode = typeCode + remainCode;
-    return newCode;
+
+    return typeCode + remainCode;
   }
 }
