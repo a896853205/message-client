@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { Op } from 'Sequelize';
 
 import { PAGE } from '../../core/constants/index';
-import { planOutRandom } from '../../utils/randomCode';
+import { planOutRandom } from '../../utils/random-code';
 
 @Injectable()
 export class MessageService {

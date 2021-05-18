@@ -4,6 +4,8 @@ import {
   Query,
   Put,
   Delete,
+  Post,
+  Body,
   Res,
   ParseIntPipe,
   DefaultValuePipe,
@@ -100,12 +102,12 @@ export class MessageController {
       res.status(400).send();
     }
   }
-  @Put('create')
+  @Post()
   @UseGuards(AuthGuard('jwt'))
   async create(
-    @Query('message') message: CreateMessageDto['message'],
-    @Query('type') type: CreateMessageDto['type'],
-    @Query('code') code: CreateMessageDto['code'],
+    @Body('message') message: CreateMessageDto['message'],
+    @Body('type') type: CreateMessageDto['type'],
+    @Body('code') code: CreateMessageDto['code'],
     @Res() res: Response,
   ) {
     try {
@@ -117,9 +119,13 @@ export class MessageController {
       if (createResult) {
         res.status(200).send(createResult);
       } else {
+        // FIXME：上面整体都catch住了，service层应该判断是否创建成功的逻辑，如果不成功throw，外边这边就不用判断了，try直接返回200就好
         res.status(400).send();
       }
     } catch (errorInfo) {
+      // FIXME: 这块逻辑要分开，如果是自己抛出来的错误就返回400，如果是其他错误就返回500
+      console.error(errorInfo);
+
       res.status(400).send('code已经存在，请重新生成！');
     }
   }
