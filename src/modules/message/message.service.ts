@@ -64,24 +64,20 @@ export class MessageService {
 
   async findRecommendMessages(
     message: string,
-  ): Promise<{ count: number; recommend: string[] }> {
+  ): Promise<{ count: number; recommend: Message[] }> {
     const results = await this.messageRepository.findAndCountAll<Message | null>(
       {
-        attributes: ['message'],
         where: {
           message: {
             [Op.like]: `%${message}%`,
           },
         },
+        limit: PAGE, // 假设一页展示5项
       },
     );
-    let recommend: string[] = [];
-    for (let i = 0; i < results.count; i++) {
-      recommend[i] = results.rows[i].message;
-    }
     return {
       count: results.count,
-      recommend,
+      recommend: results.rows,
     };
   }
 
@@ -123,6 +119,7 @@ export class MessageService {
           [Op.like]: `${typeCode}%`,
         },
       },
+      raw: true,
     });
     let existedCode: string[] = [];
 

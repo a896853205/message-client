@@ -95,7 +95,7 @@ export class MessageController {
   ) {
     try {
       const code = await this.messageService.newCode(type);
-      res.send(code);
+      res.send({ code });
     } catch (errorInfo) {
       res.status(400).send();
     }
@@ -115,7 +115,7 @@ export class MessageController {
         code,
       );
       if (createResult) {
-        res.status(204).send();
+        res.status(200).send(createResult);
       } else {
         res.status(400).send();
       }
