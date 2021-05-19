@@ -12,6 +12,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
+
 import { MessageService } from './message.service';
 import {
   SearchMessageDto,
@@ -20,12 +22,15 @@ import {
   CreateMessageDto,
 } from './dto/message.dto';
 import { Response } from 'express';
+
+@ApiBearerAuth()
 @Controller('messages')
 export class MessageController {
   constructor(private messageService: MessageService) {}
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
+  @ApiQuery({ type: [SearchMessageDto] })
   async findAllByCodeAndMessageAndType(
     @Query('code', new DefaultValuePipe('')) code: SearchMessageDto['code'],
     @Query('message', new DefaultValuePipe(''))
