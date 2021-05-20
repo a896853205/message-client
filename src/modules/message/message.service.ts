@@ -96,15 +96,20 @@ export class MessageService {
     const results = await this.findByCode(code);
 
     if (results > 0) {
-      throw new Error('already exist');
+      throw new Error('exist');
     }
 
-    return await this.messageRepository.create({
+    const createResults = await this.messageRepository.create({
       message,
       type,
       code,
       uuid: v4(),
     });
+    if (!createResults) {
+      // 创建失败
+      throw new Error('create');
+    }
+    return createResults;
   }
 
   async findAllCode(typeCode: string): Promise<string[]> {

@@ -108,30 +108,29 @@ export class MessageController {
     }
   }
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   async create(
     @Body('message') message: CreateMessageDto['message'],
     @Body('type') type: CreateMessageDto['type'],
     @Body('code') code: CreateMessageDto['code'],
     @Res() res: Response,
   ) {
+    console.log(message, code, type);
     try {
       const createResult = await this.messageService.create(
         message,
         type,
         code,
       );
-      if (createResult) {
-        res.status(200).send(createResult);
-      } else {
-        // FIXME：上面整体都catch住了，service层应该判断是否创建成功的逻辑，如果不成功throw，外边这边就不用判断了，try直接返回200就好
-        res.status(400).send();
-      }
-    } catch (errorInfo) {
+      // FIXME：上面整体都catch住了，service层应该判断是否创建成功的逻辑，如果不成功throw，外边这边就不用判断了，try直接返回200就好
+      res.status(200).send(createResult);
+    } catch (error) {
       // FIXME: 这块逻辑要分开，如果是自己抛出来的错误就返回400，如果是其他错误就返回500
-      console.error(errorInfo);
-
-      res.status(400).send('code已经存在，请重新生成！');
+      console.log(error.message);
+      if (error.message === 'exist') {
+        res.status(400).send('code已经存在，请重新生成！');
+      }
+      res.status(500).send('创建失败！');
     }
   }
 }
