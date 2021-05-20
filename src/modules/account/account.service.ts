@@ -1,8 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { v4 } from 'uuid';
+import { Op } from 'sequelize';
 
 import { Account, SafeAccount } from './account.entity';
-
+import { PAGE } from '../../core/constants/index';
 @Injectable()
 export class AccountService {
   constructor(
@@ -49,6 +50,19 @@ export class AccountService {
       avatarUrl,
       isAuth: 0,
       accessToken,
+    });
+  }
+
+  async account(name: string, isAuth: number, page: number) {
+    return await this.accountRepository.findAndCountAll({
+      where: {
+        name: {
+          [Op.like]: `%${name}%`,
+        },
+        isAuth,
+      },
+      offset: (page - 1) * 5,
+      limit: PAGE,
     });
   }
 }
