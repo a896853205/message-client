@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Message } from './message.entity';
 import { v4 } from 'uuid';
-import { Op } from 'Sequelize';
+import { Op } from 'sequelize';
 
 import { PAGE } from '../../core/constants/index';
 import { planOutRandom } from '../../utils/random-code';
