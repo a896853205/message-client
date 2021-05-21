@@ -9,4 +9,5 @@ RUN yarn config set registry https://registry.npm.taobao.org
 RUN yarn install
 RUN yarn build
 EXPOSE 7002
+
 CMD ["yarn", "run", "start:prod"]
