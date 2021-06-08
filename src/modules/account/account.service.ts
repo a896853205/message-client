@@ -59,10 +59,25 @@ export class AccountService {
         name: {
           [Op.like]: `%${name}%`,
         },
-        isAuth,
+        isAuth: {
+          [Op.like]: `%${isAuth}%`,
+        },
       },
       offset: (page - 1) * 5,
       limit: PAGE,
     });
+  }
+
+  async changeIsAuth(uuid: string, isAuth: number) {
+    return await this.accountRepository.update(
+      {
+        isAuth,
+      },
+      {
+        where: {
+          uuid,
+        },
+      },
+    );
   }
 }

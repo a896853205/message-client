@@ -1,5 +1,6 @@
 import { IsInt, IsString, MaxLength, IsIn } from 'class-validator';
-import { OmitType, PartialType, PickType } from '@nestjs/swagger';
+import { PartialType, PickType } from '@nestjs/swagger';
+import { Account } from '../account.entity';
 
 export class AccountDto {
   @IsInt()
@@ -36,4 +37,8 @@ export class AccountDto {
 
 export class SearchAccountDto extends PartialType(
   PickType(AccountDto, ['page', 'isAuth', 'name'] as const),
+) {}
+
+export class PutIsAuthAccountDto extends PartialType(
+  PickType(AccountDto, ['uuid', 'isAuth'] as const),
 ) {}
